@@ -1,8 +1,8 @@
 var restify = require('restify');
 var builder = require('botbuilder');
 
-const appId = process.env.MicrosoftAppId | 'c718e84f-a303-4787-850d-e53f1928a804';
-const appPassword = process.env.MicrosoftAppPassword | 'tdfHHOXL5{(%*zsnqUQ7011';
+const appId = process.env.MicrosoftAppId || 'c718e84f-a303-4787-850d-e53f1928a804';
+const appPassword = process.env.MicrosoftAppPassword || 'tdfHHOXL5{(%*zsnqUQ7011';
 
 // Setup Restify Server
 var server = restify.createServer();
