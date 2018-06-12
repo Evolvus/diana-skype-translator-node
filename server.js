@@ -19,22 +19,20 @@ var connector = new builder.ChatConnector({
 });
 
 // Listen for messages from users 
-server.post('/api/messages', connector.listen(),()=>{
-    console.log("Make sure MicrosoftAppId,MicrosoftAppPassword,DIANA_NLP_SERVICE_URL environment variable are set properly");
-});
+server.post('/api/messages', connector.listen());
 
 // Receive messages from the user and respond by echoing each message back (prefixed with 'You said:')
 var bot = new builder.UniversalBot(connector, function (session) {
 
     console.log(`${dianaNlpUrl}?query=${session.message.text}`);
 
- axios.post(`${dianaNlpUrl}?query=${session.message.text}`)
+    axios.post(`${dianaNlpUrl}?query=${session.message.text}`)
         .then(function (response) {
             console.log(response.data.body);
-            const body =  response.data.body;
+            const body = response.data.body;
             session.send(prepareResponse(body));
         }).catch(function (error) {
-            console.log("ERROR",error);
+            console.log("ERROR", error);
             session.send("Something went wrong...come back later !!");
         });
 
@@ -47,23 +45,67 @@ var bot = new builder.UniversalBot(connector, function (session) {
 
 function prepareResponse(standardResponse) {
 
-    
-    switch(standardResponse.type){
+
+    switch (standardResponse.type) {
 
         case 'SIMPLE':
-        return {
-            "type": "message",
-            "text": standardResponse.displayText[getRandomInt(standardResponse.displayText.length)]
-        };
+            return {
+                "type": "message",
+                "text": standardResponse.displayText[getRandomInt(standardResponse.displayText.length)]
+            };
 
         case 'RICH':
-        return {
-            "type": "message",
-            "text": standardResponse.displayText[getRandomInt(standardResponse.displayText.length)]
-        };
+            console.log('Response is RICH <><><>', standardResponse.displayText[getRandomInt(standardResponse.displayText.length)]);
+
+            var richResponse = {
+                "type": "message",
+                //"text": standardResponse.displayText[getRandomInt(standardResponse.displayText.length)],
+                "attachments": [{
+                    "contentType": "application/vnd.microsoft.card.adaptive",
+                    "content": {
+                        "type": "AdaptiveCard",
+                        "version": "1.0",
+                        "body": [],
+                        "actions": []
+                    }
+                }]
+            };
+            
+            if (standardResponse.displayText && standardResponse.displayText.length > 0) {
+                for (var index = 0; index < standardResponse.displayText.length; index++) {
+                    richResponse.attachments[0].content.body.push({
+                        "type": "TextBlock",
+                        "text": standardResponse.displayText[index],
+                        "wrap": true
+                    });
+                }
+            }
+            
+            if (standardResponse.buttons && standardResponse.buttons.length > 0) {
+                for (var index = 0; index < standardResponse.buttons.length; index++) {
+                    richResponse.attachments[0].content.actions.push({
+                        "type": "Action.Submit",
+                        "title": standardResponse.buttons[index].name,
+                        "data": standardResponse.buttons[index].value
+                    });
+                }
+            }
+
+
+            if (standardResponse.images && standardResponse.images.length > 0) {
+                for (var index = 0; index < standardResponse.images.length; index++) {
+                    richResponse.attachments[0].content.body.push({
+                        "type": "Image",
+                        "url": standardResponse.images[index].url,
+                        "size": "large"
+                    });
+                }
+            }
+
+            return richResponse;
 
         default:
-        return "default message";
+            return "Sorry something went wrong";
 
 
     }
@@ -73,4 +115,4 @@ function prepareResponse(standardResponse) {
 
 function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
-  }
+}
