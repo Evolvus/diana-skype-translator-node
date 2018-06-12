@@ -1,0 +1,15 @@
+{
+    "name": "ezipTest",
+    "description": "",
+    "secretKey": "",
+    "services": [
+        {
+            "id": "497a87f0-6e0c-11e8-81c7-5f68c7322f1e",
+            "name": "http://localhost:3978",
+            "type": "endpoint",
+            "appId": "c718e84f-a303-4787-850d-e53f1928a804",
+            "appPassword": "tdfHHOXL5{(%*zsnqUQ7011",
+            "endpoint": "http://localhost:3978/api/messages"
+        }
+    ]
+}
