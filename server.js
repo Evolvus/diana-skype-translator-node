@@ -70,7 +70,7 @@ function prepareResponse(standardResponse) {
                     }
                 }]
             };
-            
+
             if (standardResponse.displayText && standardResponse.displayText.length > 0) {
                 for (var index = 0; index < standardResponse.displayText.length; index++) {
                     richResponse.attachments[0].content.body.push({
@@ -80,7 +80,7 @@ function prepareResponse(standardResponse) {
                     });
                 }
             }
-            
+
             if (standardResponse.buttons && standardResponse.buttons.length > 0) {
                 for (var index = 0; index < standardResponse.buttons.length; index++) {
                     richResponse.attachments[0].content.actions.push({
@@ -97,7 +97,14 @@ function prepareResponse(standardResponse) {
                     richResponse.attachments[0].content.body.push({
                         "type": "Image",
                         "url": standardResponse.images[index].url,
-                        "size": "large"
+                        "size": "big",
+                        "selectAction": {
+                            "type": "Action.OpenUrl",
+                            "title": `Screenshot${index}`,
+                            "url": standardResponse.images[index].url
+                        },
+                        "separator": true
+
                     });
                 }
             }
