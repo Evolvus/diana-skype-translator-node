@@ -19,22 +19,23 @@ var connector = new builder.ChatConnector({
 });
 
 // Listen for messages from users 
-server.post('/api/messages', connector.listen());
+server.post('/api/messages', connector.listen(),()=>{
+    console.log("Make sure MicrosoftAppId,MicrosoftAppPassword,DIANA_NLP_SERVICE_URL environment variable are set properly");
+});
 
 // Receive messages from the user and respond by echoing each message back (prefixed with 'You said:')
 var bot = new builder.UniversalBot(connector, function (session) {
 
     console.log(`${dianaNlpUrl}?query=${session.message.text}`);
 
-    axios.post(`${dianaNlpUrl}?query=${session.message.text}`)
+ axios.post(`${dianaNlpUrl}?query=${session.message.text}`)
         .then(function (response) {
-            console.log("BODY>>",response.body);
-            console.log("BODY DISPLAYTEXT>>",response.body.displayText[0]);
-            session.send("Hello From bot");
-        })
-        .catch(function (error) {
-            console.log(error);
-            session.send(error);
+            console.log(response.data.body);
+            const body =  response.data.body;
+            session.send(prepareResponse(body));
+        }).catch(function (error) {
+            console.log("ERROR",error);
+            session.send("Something went wrong...come back later !!");
         });
 
 
@@ -46,4 +47,30 @@ var bot = new builder.UniversalBot(connector, function (session) {
 
 function prepareResponse(standardResponse) {
 
+    
+    switch(standardResponse.type){
+
+        case 'SIMPLE':
+        return {
+            "type": "message",
+            "text": standardResponse.displayText[getRandomInt(standardResponse.displayText.length)]
+        };
+
+        case 'RICH':
+        return {
+            "type": "message",
+            "text": standardResponse.displayText[getRandomInt(standardResponse.displayText.length)]
+        };
+
+        default:
+        return "default message";
+
+
+    }
+
+
 }
+
+function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+  }
