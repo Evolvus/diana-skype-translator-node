@@ -102,8 +102,7 @@ function prepareResponse(standardResponse) {
                             "type": "Action.OpenUrl",
                             "title": `Screenshot${index}`,
                             "url": standardResponse.images[index].url
-                        },
-                        "separator": true
+                        }
 
                     });
                 }
