@@ -166,8 +166,7 @@ function prepareResponse(standardResponse) {
             };
 
         case 'RICH':
-            console.log('Response is RICH <><><>', standardResponse.displayText[getRandomInt(standardResponse.displayText.length)]);
-
+            
             // var speechText = '';
             // for(var i=0;i<standardResponse.speechText.length;i++){
             //     speechText = speechText+ '\n'+standardResponse.speechText[i];
@@ -176,7 +175,7 @@ function prepareResponse(standardResponse) {
             var richResponse = {
                 "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
                 "type": "message",
-                "text": standardResponse.displayText[0],
+                //"text": standardResponse.displayText[0],
                 //"speak":speechText, 
                 "attachments": [{
                     "contentType": "application/vnd.microsoft.card.adaptive",
