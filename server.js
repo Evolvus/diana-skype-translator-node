@@ -59,10 +59,16 @@ function prepareResponse(standardResponse) {
         case 'RICH':
             console.log('Response is RICH <><><>', standardResponse.displayText[getRandomInt(standardResponse.displayText.length)]);
 
+            var speechText = '';
+            for(var i=0;i<standardResponse.speechText.length;i++){
+                speechText = speechText+ '\n'+standardResponse.speechText[i];
+            }
+
             var richResponse = {
                 "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
                 "type": "message",
-                //"text": standardResponse.displayText[getRandomInt(standardResponse.displayText.length)],
+                "text": standardResponse.displayText[0],
+                "speak":speechText,
                 "attachments": [{
                     "contentType": "application/vnd.microsoft.card.adaptive",
                     "content": {
@@ -79,7 +85,9 @@ function prepareResponse(standardResponse) {
                     richResponse.attachments[0].content.body.push({
                         "type": "TextBlock",
                         "text": `${standardResponse.displayText[index]}`,
-                        "wrap": "true"
+                        "wrap": "true",
+                        "spacing": "large",
+                        "separator":"true"
                     });
                 }
             }
@@ -101,6 +109,7 @@ function prepareResponse(standardResponse) {
                         "type": "Image",
                         "url": `${standardResponse.images[index].url}`,
                         "size": "big",
+                        "spacing": "large",
                         "selectAction": {
                             "type": "Action.OpenUrl",
                             "title": `Screenshot${index}`,
