@@ -2,8 +2,10 @@ var restify = require('restify');
 var builder = require('botbuilder');
 var axios = require('axios');
 
-const appId = process.env.MicrosoftAppId || 'c718e84f-a303-4787-850d-e53f1928a804';
-const appPassword = process.env.MicrosoftAppPassword || 'tdfHHOXL5{(%*zsnqUQ7011';
+//const appId = process.env.MicrosoftAppId || 'c718e84f-a303-4787-850d-e53f1928a804';
+//const appPassword = process.env.MicrosoftAppPassword || 'tdfHHOXL5{(%*zsnqUQ7011';
+const appId = 'b26ee976-6431-4667-8f78-e970db44fe07';
+const appPassword = 'amitdk*636';
 const dianaNlpUrl = process.env.DIANA_NLP_SERVICE_URL || 'https://lit-inlet-30311.herokuapp.com/api/v0.1/diana';
 
 // Setup Restify Server
@@ -24,6 +26,7 @@ server.post('/api/messages', connector.listen());
 // Receive messages from the user and respond by echoing each message back (prefixed with 'You said:')
 var bot = new builder.UniversalBot(connector, function (session) {
     
+   // console.log("session >>??",session);
     console.log(`Calling NLP Serice : ${dianaNlpUrl}?query=${session.message.text}`);
 
     axios.post(`${dianaNlpUrl}?query=${session.message.text}`)
@@ -48,35 +51,105 @@ var bot = new builder.UniversalBot(connector, function (session) {
 
 
 function testBtn(){
-    
     return {
         "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-        "type": "AdaptiveCard",
+        "type": "message",
+        "text":"helllllo",
+        //"speak":speechText, 
+        "attachments": [{
+            "contentType": "application/vnd.microsoft.card.adaptive",
+            "content": {
+                "type": "AdaptiveCard",
         "version": "1.0",
         "body": [
             {
-                "type": "TextBlock",
-                "text": "Action.Title must be a non-empty string. Only the **first** action below should render",
-                "wrap": true
+                "type": "ColumnSet",
+                "columns": [
+                    {
+                        "type": "Column",
+                        "width": 2,
+                        "items": [
+                            {
+                                "type": "TextBlock",
+                                "text": "Tell us about yourself",
+                                "weight": "bolder",
+                                "size": "medium"
+                            },
+                            {
+                                "type": "TextBlock",
+                                "text": "We just need a few more details to get you booked for the trip of a lifetime!",
+                                "isSubtle": true,
+                                "wrap": true
+                            },
+                            {
+                                "type": "TextBlock",
+                                "text": "Don't worry, we'll never share or sell your information.",
+                                "isSubtle": true,
+                                "wrap": true,
+                                "size": "small"
+                            },
+                            {
+                                "type": "TextBlock",
+                                "text": "Your name",
+                                "wrap": true
+                            },
+                            {
+                                "type": "Input.Text",
+                                "id": "myName",
+                                "placeholder": "Last, First"
+                            },
+                            {
+                                "type": "TextBlock",
+                                "text": "Your email",
+                                "wrap": true
+                            },
+                            {
+                                "type": "Input.Text",
+                                "id": "myEmail",
+                                "placeholder": "youremail@example.com",
+                                "style": "email"
+                            },
+                            {
+                                "type": "TextBlock",
+                                "text": "Phone Number"
+                            },
+                            {
+                                "type": "Input.Text",
+                                "id": "myTel",
+                                "placeholder": "xxx.xxx.xxxx",
+                                "style": "tel"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "Column",
+                        "width": 1,
+                        "items": [
+                            {
+                                "type": "Image",
+                                "url": "https://upload.wikimedia.org/wikipedia/commons/b/b2/Diver_Silhouette%2C_Great_Barrier_Reef.jpg",
+                                "size": "auto"
+                            }
+                        ]
+                    }
+                ]
             }
         ],
         "actions": [
             {
                 "type": "Action.Submit",
-                "title": "Good"
-            },
-            {
-                "type": "Action.Submit"
+                "title": "Submit"
             },
             {
                 "type": "Action.Submit",
-                "title": ""
-            },
-            {
-                "type": "Action.Submit",
-                "title": " "
+                "title": "Hello",
+                "data":{
+                    "type":"string"
+                }
             }
         ]
+            }
+        }]
     };
 }
 
