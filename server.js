@@ -23,17 +23,17 @@ server.post('/api/messages', connector.listen());
 
 // Receive messages from the user and respond by echoing each message back (prefixed with 'You said:')
 var bot = new builder.UniversalBot(connector, function (session) {
-
-    console.log(`${dianaNlpUrl}?query=${session.message.text}`);
+    
+    console.log(`Calling NLP Serice : ${dianaNlpUrl}?query=${session.message.text}`);
 
     axios.post(`${dianaNlpUrl}?query=${session.message.text}`)
         .then(function (response) {
             const body = response.data.body;
-            //const msgResponse = prepareResponse(body);
-            //console.log("Response Sending ",msgResponse);
-            //console.log("Response Sending JSON content",msgResponse.attachments[0].content);
-            //session.send(msgResponse);
-            session.send(testBtn());
+            const msgResponse = prepareResponse(body);
+            console.log("Response Sending ",msgResponse);
+            console.log("Response Sending JSON content",msgResponse.attachments[0].content);
+            session.send(JSON.stringify(msgResponse));
+            //session.send(testBtn());
         }).catch(function (error) {
             console.log("ERROR", error);
             session.send("Something went wrong...come back later !!");
@@ -50,41 +50,34 @@ var bot = new builder.UniversalBot(connector, function (session) {
 function testBtn(){
     
     return {
-        "type": "message",
-        "text": "Plain text is ok, but sometimes I long for more...",
-        "attachments": [
-          {
-            "contentType": "application/vnd.microsoft.card.adaptive",
-            "content": {
-              "type": "AdaptiveCard",
-              "version": "1.0",
-              "body": [
-                {
-                  "type": "TextBlock",
-                  "text": "Hello World!",
-                  "size": "large"
-                },
-                {
-                  "type": "TextBlock",
-                  "text": "*Sincerely yours,*"
-                },
-                {
-                  "type": "TextBlock",
-                  "text": "Adaptive Cards",
-                  "separation": "none"
-                }
-              ],
-              "actions": [
-                {
-                  "type": "Action.Submit",
-                  "title": "Learn More",
-                  "data":"Learn More"
-                }
-              ]
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "type": "AdaptiveCard",
+        "version": "1.0",
+        "body": [
+            {
+                "type": "TextBlock",
+                "text": "Action.Title must be a non-empty string. Only the **first** action below should render",
+                "wrap": true
             }
-          }
+        ],
+        "actions": [
+            {
+                "type": "Action.Submit",
+                "title": "Good"
+            },
+            {
+                "type": "Action.Submit"
+            },
+            {
+                "type": "Action.Submit",
+                "title": ""
+            },
+            {
+                "type": "Action.Submit",
+                "title": " "
+            }
         ]
-      };
+    };
 }
 
 
