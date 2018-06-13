@@ -28,9 +28,10 @@ var bot = new builder.UniversalBot(connector, function (session) {
 
     axios.post(`${dianaNlpUrl}?query=${session.message.text}`)
         .then(function (response) {
-            console.log(response.data.body);
             const body = response.data.body;
-            session.send(prepareResponse(body));
+            const msgResponse = prepareResponse(body);
+            console.log("Response Sending ",msgResponse);
+            session.send(msgResponse);
         }).catch(function (error) {
             console.log("ERROR", error);
             session.send("Something went wrong...come back later !!");
