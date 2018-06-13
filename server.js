@@ -2,10 +2,10 @@ var restify = require('restify');
 var builder = require('botbuilder');
 var axios = require('axios');
 
-//const appId = process.env.MicrosoftAppId || 'c718e84f-a303-4787-850d-e53f1928a804';
-//const appPassword = process.env.MicrosoftAppPassword || 'tdfHHOXL5{(%*zsnqUQ7011';
-const appId = 'b26ee976-6431-4667-8f78-e970db44fe07';
-const appPassword = 'amitdk*636';
+const appId = process.env.MicrosoftAppId || 'c718e84f-a303-4787-850d-e53f1928a804';
+const appPassword = process.env.MicrosoftAppPassword || 'tdfHHOXL5{(%*zsnqUQ7011';
+//const appId = 'b26ee976-6431-4667-8f78-e970db44fe07';
+//const appPassword = 'srmON226%*ecilWRYHX86||';
 const dianaNlpUrl = process.env.DIANA_NLP_SERVICE_URL || 'https://lit-inlet-30311.herokuapp.com/api/v0.1/diana';
 
 // Setup Restify Server
