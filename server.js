@@ -76,9 +76,9 @@ function testBtn(){
               ],
               "actions": [
                 {
-                  "type": "Action.OpenUrl",
-                  "url": "http://adaptivecards.io",
-                  "title": "Learn More"
+                  "type": "Action.Submit",
+                  "title": "Learn More",
+                  "data":"Learn More"
                 }
               ]
             }
