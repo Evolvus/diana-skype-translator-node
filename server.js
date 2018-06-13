@@ -29,10 +29,11 @@ var bot = new builder.UniversalBot(connector, function (session) {
     axios.post(`${dianaNlpUrl}?query=${session.message.text}`)
         .then(function (response) {
             const body = response.data.body;
-            const msgResponse = prepareResponse(body);
-            console.log("Response Sending ",msgResponse);
-            console.log("Response Sending JSON content",msgResponse.attachments[0].content);
-            session.send(msgResponse);
+            //const msgResponse = prepareResponse(body);
+            //console.log("Response Sending ",msgResponse);
+            //console.log("Response Sending JSON content",msgResponse.attachments[0].content);
+            //session.send(msgResponse);
+            session.send(testBtn());
         }).catch(function (error) {
             console.log("ERROR", error);
             session.send("Something went wrong...come back later !!");
@@ -43,6 +44,48 @@ var bot = new builder.UniversalBot(connector, function (session) {
 
 
 });
+
+
+
+function testBtn(){
+    
+    return {
+        "type": "message",
+        "text": "Plain text is ok, but sometimes I long for more...",
+        "attachments": [
+          {
+            "contentType": "application/vnd.microsoft.card.adaptive",
+            "content": {
+              "type": "AdaptiveCard",
+              "version": "1.0",
+              "body": [
+                {
+                  "type": "TextBlock",
+                  "text": "Hello World!",
+                  "size": "large"
+                },
+                {
+                  "type": "TextBlock",
+                  "text": "*Sincerely yours,*"
+                },
+                {
+                  "type": "TextBlock",
+                  "text": "Adaptive Cards",
+                  "separation": "none"
+                }
+              ],
+              "actions": [
+                {
+                  "type": "Action.OpenUrl",
+                  "url": "http://adaptivecards.io",
+                  "title": "Learn More"
+                }
+              ]
+            }
+          }
+        ]
+      };
+}
 
 
 function prepareResponse(standardResponse) {
@@ -68,7 +111,7 @@ function prepareResponse(standardResponse) {
                 "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
                 "type": "message",
                 "text": standardResponse.displayText[0],
-                "speak":speechText,
+                "speak":speechText, 
                 "attachments": [{
                     "contentType": "application/vnd.microsoft.card.adaptive",
                     "content": {
