@@ -33,9 +33,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
         .then(function (response) {
             const body = response.data.body;
             const msgResponse = prepareResponse(body);
-            console.log("Response Sending ",msgResponse);
-            console.log("Response Sending JSON content",msgResponse.attachments[0].content);
-            session.send(JSON.parse(JSON.stringify(msgResponse)));
+            session.send(msgResponse);
             //session.send(testBtn());
         }).catch(function (error) {
             console.log("ERROR", error);
