@@ -60,6 +60,7 @@ function prepareResponse(standardResponse) {
             console.log('Response is RICH <><><>', standardResponse.displayText[getRandomInt(standardResponse.displayText.length)]);
 
             var richResponse = {
+                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
                 "type": "message",
                 //"text": standardResponse.displayText[getRandomInt(standardResponse.displayText.length)],
                 "attachments": [{
@@ -77,8 +78,8 @@ function prepareResponse(standardResponse) {
                 for (var index = 0; index < standardResponse.displayText.length; index++) {
                     richResponse.attachments[0].content.body.push({
                         "type": "TextBlock",
-                        "text": standardResponse.displayText[index],
-                        "wrap": true
+                        "text": `${standardResponse.displayText[index]}`,
+                        "wrap": "true"
                     });
                 }
             }
@@ -87,8 +88,8 @@ function prepareResponse(standardResponse) {
                 for (var index = 0; index < standardResponse.buttons.length; index++) {
                     richResponse.attachments[0].content.actions.push({
                         "type": "Action.Submit",
-                        "title": standardResponse.buttons[index].name,
-                        "data": standardResponse.buttons[index].value
+                        "title": `${standardResponse.buttons[index].name}`,
+                        "data": `${standardResponse.buttons[index].value}`
                     });
                 }
             }
@@ -98,12 +99,12 @@ function prepareResponse(standardResponse) {
                 for (var index = 0; index < standardResponse.images.length; index++) {
                     richResponse.attachments[0].content.body.push({
                         "type": "Image",
-                        "url": standardResponse.images[index].url,
+                        "url": `${standardResponse.images[index].url}`,
                         "size": "big",
                         "selectAction": {
                             "type": "Action.OpenUrl",
                             "title": `Screenshot${index}`,
-                            "url": standardResponse.images[index].url
+                            "url": `${standardResponse.images[index].url}`
                         }
 
                     });
