@@ -32,7 +32,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
             const msgResponse = prepareResponse(body);
             console.log("Response Sending ",msgResponse);
             console.log("Response Sending JSON content",msgResponse.attachments[0].content);
-            session.send(JSON.stringify(msgResponse));
+            session.send(JSON.parse(JSON.stringify(msgResponse)));
             //session.send(testBtn());
         }).catch(function (error) {
             console.log("ERROR", error);
@@ -95,16 +95,16 @@ function prepareResponse(standardResponse) {
         case 'RICH':
             console.log('Response is RICH <><><>', standardResponse.displayText[getRandomInt(standardResponse.displayText.length)]);
 
-            var speechText = '';
-            for(var i=0;i<standardResponse.speechText.length;i++){
-                speechText = speechText+ '\n'+standardResponse.speechText[i];
-            }
+            // var speechText = '';
+            // for(var i=0;i<standardResponse.speechText.length;i++){
+            //     speechText = speechText+ '\n'+standardResponse.speechText[i];
+            // }
 
             var richResponse = {
                 "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
                 "type": "message",
                 "text": standardResponse.displayText[0],
-                "speak":speechText, 
+                //"speak":speechText, 
                 "attachments": [{
                     "contentType": "application/vnd.microsoft.card.adaptive",
                     "content": {
